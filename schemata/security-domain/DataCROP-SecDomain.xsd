@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Author: Nikos Kefalakis (https://github.com/nkef) -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="eu:datacrop:global:dm"
+    elementFormDefault="qualified" attributeFormDefault="unqualified"
+    xmlns:dm="eu:datacrop:global:dm" xmlns:dk="eu:datacrop:data:dk"
+    xmlns:cir="http://www.openoandm.org/ws-cir/" xmlns:capec="http://capec.mitre.org/capec-3"
+    xmlns:cvss="http://scap.nist.gov/schema/cvss-v2/0.2">
+    <xs:import namespace="http://capec.mitre.org/capec-3"
+        schemaLocation="thirdparty/mitre/capec/ap_schema_v3.0.xsd"/>
+    <xs:import namespace="http://scap.nist.gov/schema/cvss-v2/0.2"
+        schemaLocation="thirdparty/nist/nvd/cvss/cvss-v2_0.2.xsd"/>
+    <xs:group name="SecurityKB">
+        <xs:annotation>
+            <xs:documentation>Security Knowledge Base data models</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="CAPECcolection">
+                <xs:annotation>
+                    <xs:documentation>MITRE Common Attack Pattern Enumeration and Classification
+                        (CAPEC) collection</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0"
+                            ref="capec:Attack_Pattern_Catalog"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CVEcollection">
+                <xs:annotation>
+                    <xs:documentation>MITRE Common Vulnerabilities and Exposures (CVE)
+                        collection</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="CVE" maxOccurs="unbounded" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Common Vulnerability and
+                                    Exposure</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="_id" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Uniquely identifies a CVE as an
+                                                UUID</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="id"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>ID of the CVE in the format
+                                                CVE-year-number. For example: "CVE-2018-
+                                                13074".</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="summary"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>A brief summary of the
+                                                CVE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded" name="capecID"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>ID of the CAPECs associated to the
+                                                CVE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded" name="cweID"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>ID of the CWEs associated to the
+                                                CVE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded" name="cpeID"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>ID of the CPEs associated to the
+                                                CVE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="cvss"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>CVSS score associated to the
+                                                CVE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="lastModified"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Date of the last modification in the
+                                                official source</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded"
+                                        name="references" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>List of sites referring to this
+                                                CVE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CWEcollection">
+                <xs:annotation>
+                    <xs:documentation>MITRE Common Weakness Enumeration(CWE)
+                        collection</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+
+                        <xs:element name="CWE" maxOccurs="unbounded" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Common Weakness Enumeration</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="_id" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Uniquely identifies a CWE as an
+                                                UUID</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="id"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>ID of the CWE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="name"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>The quick name for the
+                                                CWE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="description"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>A quick description of the
+                                                CWE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1"
+                                        name="extendedDescription" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Description of the
+                                                CWE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded" name="id"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>List of sites referring to this
+                                                CWE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded" name="cweID"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>IDs of the CWEs associated to this
+                                                CWE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CPEcollection">
+                <xs:annotation>
+                    <xs:documentation>MITRE Common Platform Enumeration (CPE)
+                        collection</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="CPE" maxOccurs="unbounded" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Common Platform Enumeration</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="_id" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Uniquely identifies a CPE as an
+                                                UUID</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="id"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>ID of the CPE in the official
+                                                sources</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="title"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Name of the CPE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded"
+                                        name="references" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>List of sites referring to this
+                                                CPE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="vendor"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Name of the vendor linked to this
+                                                CPE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="product"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Name of the product linked to this
+                                                CPE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="version"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Version of the product to which this
+                                                CPE refers</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="1" maxOccurs="1" name="type"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Type of the product to which this CPE
+                                                refers. For instance:
+                                                "application".</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded" name="cpeID"
+                                        type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>IDs of the CPEs associated to this
+                                                CPE</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CVSScollection">
+                <xs:annotation>
+                    <xs:documentation>NIST Common Vulnerability Scoring System (CVSS)
+                        collection</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="CVSS">
+                            <xs:annotation>
+                                <xs:documentation>NIST Common Vulnerability Scoring System
+                                    (CVSS)</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="cvssType" type="cvss:cvssType"/>
+                                    <xs:element name="cvssImpactType" type="cvss:cvssImpactType"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+    <xs:group name="SecCM">
+        <xs:annotation>
+            <xs:documentation>Security-focused Configuration Management. SecCM is suitable for depicting Information Security Domain relevant entities.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Control">
+                <xs:annotation>
+                    <xs:documentation>Control element to prevent attack impact. Note that a control
+                        element can be applied at the Vulnerability Level or at the Threat Level
+                        (never to both of them).</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="ThreatBased">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Mitigation">
+                                        <xs:complexType>
+                                            <xs:sequence maxOccurs="unbounded">
+                                                <xs:element name="level" type="xs:string"/>
+                                                <xs:element maxOccurs="1" name="attackID"
+                                                  type="xs:string"/>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                                        name="assetCategoryID" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>The Asset Categories this threat-based
+                                                Control can be applied to as mitigation
+                                                action.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="VulnerabilityBased">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Mitigation">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element maxOccurs="unbounded" name="cveID"
+                                                  type="xs:string">
+                                                  <xs:annotation>
+                                                  <xs:documentation>The IDs of the CVEs (Common
+                                                  Vulnerabilities and Exposures) that this
+                                                  Vulnerability Control can be applied to as
+                                                  mitigation action.</xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                    <xs:attribute name="id" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Uniquely identifies a Control as a UUID</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="name" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>A human readable name which uniquely identifies the
+                                Control.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MitigationPlan" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation/>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="shortDescription" type="xs:string" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>The Mitigation Measure short
+                                                description</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="longDescription" type="xs:string" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>The Mitigation Measure long
+                                                description</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="controlID" type="xs:string" minOccurs="0"/>
+                        <xs:element name="assetID" type="xs:string" minOccurs="1"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:string"/>
+                    <xs:attribute name="name" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" ref="dm:VulnerabilityProfiles"/>
+            <xs:element ref="dm:Vulnerabilities" minOccurs="0"/>
+            <xs:element name="AttackScenarios" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Use Case Data</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="AbuseCase" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="AssetApplicability" maxOccurs="1"
+                                        minOccurs="0">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element minOccurs="0" name="assetID"
+                                                  type="xs:anyURI" maxOccurs="unbounded">
+                                                  <xs:annotation>
+                                                  <xs:documentation>The reference ID of an
+                                                  Asset</xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:element>
+                                                <xs:element minOccurs="0" name="assetCategoryID"
+                                                  type="xs:anyURI" maxOccurs="unbounded">
+                                                  <xs:annotation>
+                                                  <xs:documentation>The reference ID of an
+                                                  Asset</xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="id" type="xs:string">
+                                    <xs:annotation>
+                                        <xs:documentation>Uniquely identifies an abuse Use Case as a
+                                            UUID</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="name" type="xs:string" use="required">
+                                    <xs:annotation>
+                                        <xs:documentation>A human readable name which uniquely
+                                            identifies the abuse Use Case.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>Uniquely identifies an AttackScenario as a UUID.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="systemID" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>The ID of the IoT System this Attack Scenario belongs to.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+    <xs:element name="VulnerabilityProfiles">
+        <xs:annotation>
+            <xs:documentation>Provides a list of Asset's Vulnerability Profiles. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="dm:VulnerabilityProfile"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Vulnerabilities">
+        <xs:annotation>
+            <xs:documentation>Vulnerabilities is used to extend the MITRE Common Vulnerabilities and Exposures (CVE) collection. 
+TODO: Check if all of the attributes are required or are optional.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Vulnerability">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="CalculatedSubscore">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="exploitability" type="xs:float"/>
+                                        <xs:element name="impact" type="xs:float"/>
+                                        <xs:element name="CVSS" type="xs:float"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="accessVector">
+                                <xs:annotation>
+                                    <xs:documentation>Choose for Access Vector one of: "Local",
+                                        "AdjucentNetwork", "Network"</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:NMTOKEN">
+                                        <xs:enumeration value="Local"/>
+                                        <xs:enumeration value="AdjucentNetwork"/>
+                                        <xs:enumeration value="Network"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="accessComplexity">
+                                <xs:annotation>
+                                    <xs:documentation>Choose for Access Complexity one of: "Low",
+                                        "Medium", "High"</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:NMTOKEN">
+                                        <xs:enumeration value="Low"/>
+                                        <xs:enumeration value="Medium"/>
+                                        <xs:enumeration value="High"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="authentication">
+                                <xs:annotation>
+                                    <xs:documentation>Choose for Authentication one of: "None",
+                                        "Single_Factor_Authenticated",
+                                        "Multy_Factor_Authenticated"</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:NMTOKEN">
+                                        <xs:enumeration value="None"/>
+                                        <xs:enumeration value="Single_Factor_Authenticated"/>
+                                        <xs:enumeration value="Multy_Factor_Authenticated"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="confidentialityImpact">
+                                <xs:annotation>
+                                    <xs:documentation>Choose for Confidentiality Impact one of:
+                                        "None", "Partial", "Complete"</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:NMTOKEN">
+                                        <xs:enumeration value="None"/>
+                                        <xs:enumeration value="Partial"/>
+                                        <xs:enumeration value="Complete"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="integrityImpact">
+                                <xs:annotation>
+                                    <xs:documentation>Choose for Integrity Impact one of: "None",
+                                        "Partial", "Complete"</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:NMTOKEN">
+                                        <xs:enumeration value="None"/>
+                                        <xs:enumeration value="Partial"/>
+                                        <xs:enumeration value="Complete"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="availabilityImpact">
+                                <xs:annotation>
+                                    <xs:documentation>Choose for Impact Subscore one of: "None",
+                                        "Partial", "Complete"</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:NMTOKEN">
+                                        <xs:enumeration value="None"/>
+                                        <xs:enumeration value="Partial"/>
+                                        <xs:enumeration value="Complete"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="AffectedAssetCategory">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="unbounded" minOccurs="0"
+                                            name="assetCategoryID" type="xs:string"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="cveID" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="VulnerabilityProfile">
+        <xs:annotation>
+            <xs:documentation>Provides the Asset's Vulnerability Profile. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cpeID" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The IDs of the CPEs (Common Platform
+                                        Enumeration) associated to this asset.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="cveID" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The IDs of the CVEs (Common Vulnerabilities
+                                        and Exposures) that can be associated to this asset. A
+                                        vulnerability is characterized by two properties;
+                                        exploitability, i.e. how easily you can make use of the
+                                        vulnerability and impact i.e. how dangerous is the
+                                        exploitation of this vulnerability. The model defines
+                                        sub-scores for Confidentiality, Integrity and Availability
+                                        (a.k.a. CIA) consequences. An open repository for disclosed
+                                        vulnerabilities can be found here:
+                                        https://www.cvedetails.com</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="capecID" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The IDs of the CAPECs (Common Attack Pattern
+                                        Enumeration and Classification) that can be associated to
+                                        this asset. Note that in the cyber security domain, the
+                                        terms Attack and Threat coincide.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="cweID" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The IDs of the CWEs (Common Weakness
+                                        Enumeration) that can be associated to this
+                                        asset.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="assetID" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>The ID of the Asset this vulnerability Profile maps to.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="id" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Vulnerability Profile as an UUID.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+
+    </xs:element>
+    <xs:element name="AdditionalInformation" type="xs:anyType">
+        <xs:annotation>
+            <xs:documentation>Optional auxiliary field that may contain any additional
+                information</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+</xs:schema>

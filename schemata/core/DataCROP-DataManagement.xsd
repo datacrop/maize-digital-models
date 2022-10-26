@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- Author: Nikos Kefalakis (https://github.com/nkef) -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="eu:datacrop:global:dm"
+    elementFormDefault="qualified" attributeFormDefault="unqualified"
+    xmlns:dm="eu:datacrop:global:dm" xmlns:dk="eu:datacrop:data:dk"
+    xmlns:cir="http://www.openoandm.org/ws-cir/">
+
+    <xs:import namespace="http://www.openoandm.org/ws-cir/"
+        schemaLocation="thirdparty/cir/CommonInteroperabilityRegistry.xsd"/>
+
+    <xs:element name="DataCROP-DM">
+        <xs:annotation>
+            <xs:documentation>DataCROP Data Management</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element minOccurs="0" name="InteroperabilityRegistry" type="cir:Registry"
+                    maxOccurs="unbounded"/>
+                <xs:group ref="dm:ResourceManagement"/>
+                <xs:group ref="dm:DPE"/>
+                <xs:element minOccurs="1" ref="dm:Observation"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:group name="ResourceManagement">
+        <xs:annotation>
+            <xs:documentation>Resource Management data models</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="dm:DataKind" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element ref="dm:DataInterfaceType" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Provides the type of information needed to connect to a Data Source and access its data.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="dm:DigitalResource" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Digital Resource provides the instantiation of the context and connection interface of a data source. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+    <xs:group name="DPE">
+        <xs:annotation>
+            <xs:documentation>Data Processing Engine Management</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:PD"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:PM"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:PO"/>
+        </xs:sequence>
+    </xs:group>
+    <xs:element name="Observation">
+        <xs:annotation>
+            <xs:documentation>Models and represents the actual dataset that stems from an instance of a Digital Resource </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dataSourceID" type="xs:anyURI">
+                    <xs:annotation>
+                        <xs:documentation>The unique identifier of the component (physical or virtual) producing the observation (i.e. a probe or an analytics processor).</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="assetID" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>The unique identifier  of the monitored Asset.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="dataKindID" type="xs:anyURI">
+                    <xs:annotation>
+                        <xs:documentation>The unique identifier  of the the Data Kind (Report Type) included in the Value field of this Observation.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" name="timestamp" type="xs:dateTime">
+                    <xs:annotation>
+                        <xs:documentation>Timestamp is the dateTime of when an observation was
+                            captured.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="dm:Location" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>The location (Physical or Virtual) this Observation value was captured.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="value" type="xs:anyType" minOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Element providing the Observation's value based on the identifyed Data Kind.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies an Observation with a
+                        UUID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DataKind">
+        <xs:annotation>
+            <xs:documentation>DataKind provides a description of the type of data that are included in the Value field of an observation.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" type="xs:string" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Provides an Optional description of the Data Kind.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" name="modelType" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the structure (complex or simple) of the data that are included in the Value field of an Observation. It may include a proprietary schema, the URL of a standard structure (i.e., SenML, OM, ...)  or a textual description of the structure.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" name="format" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the format of the Data (i.e. JSON, XML,...)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" name="quantityKind" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>A QuantityKind is an abstract classifier that represents the concept of "kind of quantity". A QuantityKind represents the essence of a quantity without any numerical value or unit. (e.g. for a temperature sensor the quantityKind would be temperature) </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Quantity Kind with an
+                        UUID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>A human readable name which uniquely identifies the Data Kind.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DataInterface">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dataInterfaceTypeID" type="xs:string"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:ParameterValue"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DataInterfaceType">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" type="xs:string" minOccurs="0"/>
+                <xs:element ref="dm:Parameter" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a ConnectionInterfaceType with an
+                        UUID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>A human readable name which uniquely identifies the DataInterfaceType.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ParameterValue">
+        <xs:complexType>
+            <xs:all>
+                <xs:element type="xs:string" name="name"/>
+                <xs:element type="xs:anyType" name="value"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Parameter">
+        <xs:annotation>
+            <xs:documentation>Parameter Specification</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" type="xs:string" minOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Element describing the value of an
+                            attribute.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="1" name="type" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>A classification of data (i.e. short, int, float, boolean,
+                            ...)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="defaultValue" type="xs:anyType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>A predefined default value for an
+                            attribute.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Location">
+        <xs:annotation>
+            <xs:documentation>Indicating the location at which something took place</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="0" name="geoLocation">
+                    <xs:annotation>
+                        <xs:documentation>Specifying a physical location as a pair of coordinates.                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="latitude" type="xs:string"/>
+                            <xs:element name="longitude" type="xs:string"/>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="virtualLocation" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Specifying a virtual location (it could be the ID or URL of a resource or a subsystem)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PO">
+        <xs:annotation>
+            <xs:documentation>Processor Orchestrator rovides a list of processor instances that comprise a processing pipeline.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="DataProcessors">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="dm:PM"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Processor Orchestrator with an UUID.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PM">
+        <xs:annotation>
+            <xs:documentation>Processor Manifest contains the instantiation of a processor based on the processor description</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="processorDefinitionReferenceID" type="xs:anyURI">
+                    <xs:annotation>
+                        <xs:documentation>The Reference ID of the Processor Definition(PD) this PM
+                            is using.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="description" minOccurs="0" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Textual description for the Processor
+                            Manifest</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="DataInput">
+                    <xs:annotation>
+                        <xs:documentation>The list of Digital Resources the Processor is using as input.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="dm:DigitalResource" maxOccurs="unbounded" minOccurs="0"
+                            />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element maxOccurs="1" name="DataOutput">
+                    <xs:annotation>
+                        <xs:documentation>The list of the Digital Resources the Processor is using as output.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="dm:DigitalResource" maxOccurs="unbounded" minOccurs="0"
+                            />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:ParameterValue"/>
+                <xs:element name="additionalInformation" type="xs:anyType" maxOccurs="unbounded"
+                    minOccurs="0"/>
+
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Processor Manifest with an UUID.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DigitalResource">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="assetID" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Points to the Asset this data source is produced</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="description" type="xs:string" minOccurs="0"/>
+                <xs:element ref="dm:Location" minOccurs="0"/>
+                <xs:element name="dataKindID" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the Measurement kind of the Data Source with the help of the Quantity Kind entity.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="dm:DataInterface">
+                    <xs:annotation>
+                        <xs:documentation>Provides information on how to use an interface in order to interact with a data source.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="characteristics" type="xs:anyType">
+                    <xs:annotation>
+                        <xs:documentation>Provides the characteristics of a data source.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="additionalInformation" type="xs:anyType"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Digital Resource with a UUID.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>A human readable name which uniquely identifies the Digital Resource.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PD">
+        <xs:annotation>
+            <xs:documentation>Processor Definition provides the characteristics of a processor.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="1" maxOccurs="1" name="processorType" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>The type of the Processor (i.e., Probe, Analytics, Persistance, Data Routing)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="description" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Description of the Processor</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="version" type="xs:string" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>The version of the processor type</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="copyright" type="xs:string" maxOccurs="1" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Processor Owner</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="1" maxOccurs="1" name="processorLocation" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>The physical or relative location of the processor library or service instance.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" ref="dm:Parameters"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:AdditionalInformation"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:anyURI" use="optional">
+                <xs:annotation>
+                    <xs:documentation>The Processor ID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>The processor name</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Parameters">
+        <xs:annotation>
+            <xs:documentation>Policy list of required parameters</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:Parameter"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AdditionalInformation" type="xs:anyType">
+        <xs:annotation>
+            <xs:documentation>Optional auxiliary field that may contain any additional
+                information</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Author: Nikos Kefalakis (https://github.com/nkef) -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="eu:datacrop:global:dm"
+    elementFormDefault="qualified" attributeFormDefault="unqualified"
+    xmlns:dm="eu:datacrop:global:dm" xmlns:dk="eu:datacrop:data:dk"
+    xmlns:cir="http://www.openoandm.org/ws-cir/" xmlns:capec="http://capec.mitre.org/capec-3"
+    xmlns:cvss="http://scap.nist.gov/schema/cvss-v2/0.2">
+    <xs:import namespace="http://www.openoandm.org/ws-cir/"
+        schemaLocation="thirdparty/cir/CommonInteroperabilityRegistry.xsd"/>
+
+    <xs:element name="DataCROP-DM">
+        <xs:annotation>
+            <xs:documentation>DataCROP Data Model</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element minOccurs="0" name="InteroperabilityRegistry" type="cir:Registry"
+                    maxOccurs="unbounded"/>
+                <xs:group ref="dm:SLA"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TargetInfrastructure">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ip_address" type="xs:string"/>
+                <xs:element name="port" type="xs:int"/>
+                <xs:element name="shortDescription" type="xs:string" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>The Target Infrastructure short
+                            description</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="longDescription" type="xs:string" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>The Target Infrastructure long
+                            description</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="organization" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Identifier of the organization</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies the Target Infrastructure with an
+                        UUID.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:group name="SLA">
+        <xs:annotation>
+            <xs:documentation>The Service Level Agreement Group.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="SLADefinition">
+                <xs:annotation>
+                    <xs:documentation>Defines an SLA Type.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="description" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Textual description of the SLA Type.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="levelOfExpectedService" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Contractual definition of the level of service expected in a text format.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="updateMetricsProtocol" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Description of the protocol for adding and removing metrics.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="InvolvedStakeholders">
+                            <xs:annotation>
+                                <xs:documentation>The names/IDs of the involved stakeholders</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element minOccurs="0" name="customer" type="xs:string"/>
+                                    <xs:element minOccurs="0" name="supplier" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="unbounded" name="ServiceMeasurementMetricsSpec">
+                            <xs:annotation>
+                                <xs:documentation>Metrics specification for an identified service or component</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element minOccurs="0" name="Responsibilities">
+                                        <xs:annotation>
+                                            <xs:documentation>Duties and responsibilities of each party for the specific service</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element minOccurs="0" name="customer"
+                                                  type="xs:string"/>
+                                                <xs:element minOccurs="0" name="supplier"
+                                                  type="xs:string"/>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                                        ref="dm:Parameter"/>
+                                </xs:sequence>
+                                <xs:attribute name="serviceName" type="xs:string">
+                                    <xs:annotation>
+                                        <xs:documentation>The name or ID of the SecureIoT component/service these metrics are collected from</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element minOccurs="0" name="ConfigurationParameters">
+                            <xs:annotation>
+                                <xs:documentation>SLA component configuration parameters specification. Here we identify the required parameters for the SecureIoT SLA component runtime.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                                        ref="dm:Parameter"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element ref="dm:AdditionalInformation"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Uniquely identifies an SLA Type with an UUID.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="name" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>A human readable name which uniquely identifies the SLA Type.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="SlaManifest">
+                <xs:annotation>
+                    <xs:documentation>Defines an SLA runnable Object.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="slaDefinitionID" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>The SLA Type this SLA belongs to.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="description" minOccurs="0" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Textual description of the SLA.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="DataFeed">
+                            <xs:annotation>
+                                <xs:documentation>The list of data sources the Analytics algorithm is using as input.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element ref="dm:digitalResource"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" name="DataSink">
+                            <xs:annotation>
+                                <xs:documentation>The list of the Digital Resources the Processor is forwarding the data to.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element ref="dm:digitalResource"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="unbounded" name="ServiceMeasurementMetrics">
+                            <xs:annotation>
+                                <xs:documentation>Provides the thresholds of a list of metrics specified in the SLA Type definition. These thresholds are compared with the actual reported metrics to check if the agreed service levels are achieved.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                                        ref="dm:ParameterValue">
+                                        <xs:annotation>
+                                            <xs:documentation>Metrics thresholds specified in the SLA Type definition.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="serviceName" type="xs:string">
+                                    <xs:annotation>
+                                        <xs:documentation>The name or ID of the SecureIoT component/service these metrics are collected from</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="ConfigurationParameters">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element maxOccurs="unbounded" minOccurs="0"
+                                        ref="dm:ParameterValue">
+                                        <xs:annotation>
+                                            <xs:documentation>Parameter Value for the execution of the SLA specified in the SLA Type.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="SlaFailActions">
+                            <xs:annotation>
+                                <xs:documentation>Remedies or penalties should agreed-on service levels not be achieved.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element minOccurs="0" name="remedies" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Optional remedies should agreed-on service levels not be achieved.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" name="penalties" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Optional penalties should agreed-on service levels not be achieved.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element ref="dm:AdditionalInformation"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Uniquely identifies an SLA with an UUID.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="name" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>A human readable name which uniquely identifies the SLA.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="ComplexSLA">
+                <xs:annotation>
+                    <xs:documentation>Identifies an SLA collection which is comprising an SLA complex Object.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="slaID"
+                            type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>SLA ID which participates in the definition of a Complex SLA.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Uniquely identifies a Complex SLA with an UUID.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="name" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>A human readable name which uniquely identifies the Complex SLA.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="SLAReport">
+                <xs:annotation>
+                    <xs:documentation>Provides an SLA report structure.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="slaID" type="xs:anyURI">
+                            <xs:annotation>
+                                <xs:documentation>The reference ID of the SLA instance associated with this report.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element minOccurs="0" name="probeID" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>The reference ID of the probe associated with the SLA.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element minOccurs="0" name="serviceName" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>The name or ID of the SecureIoT component/service these metrics are collected from</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element minOccurs="0" name="timestamp" type="xs:dateTime">
+                            <xs:annotation>
+                                <xs:documentation>Timestamp is the dateTime of when an SLA report was generated.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="measurementMetricsValues" type="xs:anyType" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation>Element providing the value of a measurement. A measurement can be a simple or complex type based on the SLA metrics definition. 
+A  simple metric measurement could be  
+The data volume provided by the probe, accounted as bytes in the case of streaming data and/or as the number of reports in case of batch data.
+The duration for which data are provided by the probe from the SECaaS Customer to the SECaaS provider.
+The service availability by calculating the downtime.
+</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Uniquely identifies an SLA Report with an UUID.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+    <xs:group name="SPEP">
+        <xs:sequence>
+            <xs:element ref="dm:SpepD"/>
+            <xs:element ref="dm:SpepM"/>
+        </xs:sequence>
+    </xs:group>
+    <xs:element name="SpepD">
+        <xs:annotation>
+            <xs:documentation>Policy Definition</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="version" type="xs:string" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>The version of the policy type</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="copyright" type="xs:string" maxOccurs="1" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Policy Owner</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="description" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Description of the Policy</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" ref="dm:Parameters"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:AdditionalInformation"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Policy Definition with an UUID.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>A human readable form of the Policy Definition name</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="ProcessType" use="optional" default="Auto">
+                <xs:annotation>
+                    <xs:documentation>Identifies the Type of the Policy (Automatically Actuated/ Manually Actuated)
+</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="Auto"/>
+                        <xs:enumeration value="Manual"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SpepM">
+        <xs:annotation>
+            <xs:documentation>Policy Manifest</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="policyDefinitionReferenceID" type="xs:anyURI">
+                    <xs:annotation>
+                        <xs:documentation>The Reference ID of the SPEP Definition(SpepD) this SpepM is using.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="description" minOccurs="0" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Textual description for the Processor
+                            Manifest</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="PolicyActivityControl">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="duration" type="xs:string" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>This field identifies the time interval that the policy will remain activated. After the end of this interval the system will return to its original state.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="trigger" type="xs:anyURI" minOccurs="0"
+                                maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>List of AbuseCaseIDs where the SPEP will subscribe to in order to listen for new Alarms (triggers) in the case of an Auto Policy Type.
+In the case of a Manual Policy type this list identifies the incoming IDs for triggering this Policy.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="reportIfEmpty" type="xs:boolean" minOccurs="0"
+                                default="true">
+                                <xs:annotation>
+                                    <xs:documentation>Identifyes if a report will be produced and sent if it is empty.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="DurationUnit">
+                            <xs:annotation>
+                                <xs:documentation>Identifies the Duration unit.</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:NMTOKEN">
+                                    <xs:enumeration value="Y"/>
+                                    <xs:enumeration value="M"/>
+                                    <xs:enumeration value="D"/>
+                                    <xs:enumeration value="h"/>
+                                    <xs:enumeration value="m"/>
+                                    <xs:enumeration value="s"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="PolicyTransitionControl">
+                    <xs:annotation>
+                        <xs:documentation>Provides the configurations and the affected targets of the applied policy.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="PolicyTarget">
+                                <xs:annotation>
+                                    <xs:documentation>Identifies the list of targets this policy will be applied to when it gets activated. It either supports Probe configurations or Endpoint actuations.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element maxOccurs="unbounded" name="ProbeID"
+                                            minOccurs="1" type="xs:string">
+                                            <xs:annotation>
+                                                <xs:documentation>The ID of the Probe that will be affected on the policy activation.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element maxOccurs="unbounded" minOccurs="1"
+                                            name="EndPointURL" type="xs:string">
+                                            <xs:annotation>
+                                                <xs:documentation>The monitored platform exposed URL that allows a manual type of actuation.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="PolicyEnforcement">
+                                <xs:annotation>
+                                    <xs:documentation>Here the New Probe configurations will be stored in order to be applied when the Policy gets activated.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element maxOccurs="unbounded" minOccurs="1"
+                                            name="EnforcedProbeConfig">
+                                            <xs:annotation>
+                                                <xs:documentation>Holds the configurations of the affected Probes that will be applied when the policy gets activated.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element maxOccurs="unbounded" minOccurs="0"
+                                                  ref="dm:ParameterValue">
+                                                  <xs:annotation>
+                                                  <xs:documentation>contains a Probe’s configuration parameter value. The configuration parameter consists of a key-value pair where the key is mapping to a Probe’s available parameter.</xs:documentation>
+                                                  </xs:annotation>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="ProbeID" type="xs:string">
+                                                  <xs:annotation>
+                                                  <xs:documentation>Provides the id of the probe that will be affected.</xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element maxOccurs="unbounded" minOccurs="1"
+                                            name="EnforcedManualConfig"/>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="EndPolicyActivity">
+                                <xs:annotation>
+                                    <xs:documentation>Here the original Probe configurations will be stored in order to return  to their original state after the policy expiration. This entity will be filled at runtime and will be retrieved from the original configurations.
+1.With the ID of the probe the probe configuration will be retrieved. 
+2.The retrieved specification will be temporarily stored
+3.The provided “parameterValues” will be replaced
+4.“PUT: /probes/:id/specification” will be executed to update the new Probe parameters.
+</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="unbounded" name="OriginalConfig">
+                                            <xs:annotation>
+                                                <xs:documentation>Holds the original configurations of the affected Probes that will be restored when the policy will be stopped.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element maxOccurs="unbounded" minOccurs="0"
+                                                  ref="dm:ParameterValue">
+                                                  <xs:annotation>
+                                                  <xs:documentation>Contains the original Probe configuration parameter value. The configuration parameter consists of a key-value pair where the key is mapping to a Probe’s available parameter.</xs:documentation>
+                                                  </xs:annotation>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="ProbeID" type="xs:string">
+                                                  <xs:annotation>
+                                                  <xs:documentation>Provides the id of the probe that will be affected.</xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:ParameterValue">
+                    <xs:annotation>
+                        <xs:documentation>Optional entity containing an SpepD instance (the SpepM) configuration parameter. The configuration parameter consist of a key-value pair where the key specifies the SpepD parameters this instance refers to (see policyDefinitionReferenceID above).</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="additionalInformation" type="xs:anyType" maxOccurs="unbounded"
+                    minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Policy Manifest with an UUID.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="Status" use="optional" default="Initialized">
+                <xs:annotation>
+                    <xs:documentation> Status values are assigned during the Policy execution. Status can be treated as a property and used in expressions local to a Process.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="Initialized"/>
+                        <xs:enumeration value="Started"/>
+                        <xs:enumeration value="Stopped"/>
+                        <xs:enumeration value="Stopping"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ParameterValue">
+        <xs:complexType>
+            <xs:all>
+                <xs:element type="xs:string" name="name"/>
+                <xs:element type="xs:anyType" name="value"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Parameter">
+        <xs:annotation>
+            <xs:documentation>Parameter Specification</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" type="xs:string" minOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Element describing the value of an
+                            attribute.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="1" name="type" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>A classification of data (i.e. short, int, float, boolean,
+                            ...)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="defaultValue" type="xs:anyType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>A predefined default value for an
+                            attribute.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Location">
+        <xs:annotation>
+            <xs:documentation>Indicating the location at which something took
+                place</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:choice>
+                <xs:element maxOccurs="1" minOccurs="0" name="geoLocation">
+                    <xs:annotation>
+                        <xs:documentation>Specifying a physical location (a pair of coordinates)
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="latitude" type="xs:string"/>
+                            <xs:element name="longitude" type="xs:string"/>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="virtualLocation" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Specifying a virtual location (it could be the ID of a
+                            resource or subsystem)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="digitalResource">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="dataSourceID" type="xs:anyURI" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>The data source ID which comprises this Digital Resource.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="quantityKindID" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the Measurement kind of the Data Source with the help of the Quantity Kind entity.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SecurityTemplate">
+        <xs:annotation>
+            <xs:documentation>An Algorithm trained Machine Learning Security Model.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SecurityTemplateScript" type="xs:anyType"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Security Template with an UUID.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>A human readable form of the Security Template name</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Parameters">
+        <xs:annotation>
+            <xs:documentation>Policy list of required parameters</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:Parameter"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AdditionalInformation" type="xs:anyType">
+        <xs:annotation>
+            <xs:documentation>Optional auxiliary field that may contain any additional
+                information</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+</xs:schema>

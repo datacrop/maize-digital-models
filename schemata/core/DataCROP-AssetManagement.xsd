@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Author: Nikos Kefalakis (https://github.com/nkef) -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="eu:datacrop:global:dm"
+    elementFormDefault="qualified" attributeFormDefault="unqualified"
+    xmlns:dm="eu:datacrop:global:dm" xmlns:dk="eu:datacrop:data:dk">
+    <xs:group name="CIM">
+        <xs:annotation>
+            <xs:documentation>Configuration Item Management</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="dm:System" maxOccurs="unbounded" minOccurs="1"/>
+            <xs:element name="AssetCategory" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="id" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Uniquely identifies an Asset Category as a
+                                UUID</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="name" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>A human readable name which uniquely identifies the
+                                IoT Asset Category.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:Asset">
+                <xs:annotation>
+                    <xs:documentation>A cyber, physical or cyber-physical element within an
+                        organization that is used in the frame of business
+                        operations</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Monitoring">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ProbeMapping">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="assetID" type="xs:string"/>
+                                    <xs:element name="ProbeIDs" maxOccurs="1" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation>The ID of the Probe deployed to monitor this
+                            asset</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:simpleType>
+                                            <xs:list itemType="xs:string"/>
+                                        </xs:simpleType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="id" type="xs:string">
+                                    <xs:annotation>
+                                        <xs:documentation>Uniquely identifies a Probe mapping with an Asset as an UUID.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Vendors">
+                <xs:annotation>
+                    <xs:documentation>Specifies an Asset Vendor.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="1" name="Product">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element maxOccurs="unbounded" minOccurs="0" name="cpeID"
+                                        type="xs:string"/>
+                                </xs:sequence>
+                                <xs:attribute name="id" type="xs:string" use="optional">
+                                    <xs:annotation>
+                                        <xs:documentation>Uniquely identifies a Product as a
+                                            UUID</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                                <xs:attribute name="name" type="xs:string" use="required">
+                                    <xs:annotation>
+                                        <xs:documentation>A human readable name which uniquely
+                                            identifies the Product.</xs:documentation>
+                                    </xs:annotation>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:string" use="optional">
+                        <xs:annotation>
+                            <xs:documentation>Uniquely identifies a Vendor as a
+                                UUID</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="name" type="xs:string" use="required">
+                        <xs:annotation>
+                            <xs:documentation>A human readable name which uniquely identifies the
+                                Vendor.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+    <xs:element name="System">
+        <xs:annotation>
+            <xs:documentation>An observed IoT System characteristics</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" minOccurs="1" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Textual description for the IoT System.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" ref="dm:Location">
+                    <xs:annotation>
+                        <xs:documentation>The System's location Physical or
+                            Virtual</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="organization" type="xs:string" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Identifier of the organization</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="additionalInformation" type="xs:anyType" maxOccurs="unbounded"
+                    minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a System as a UUID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>A human readable name which uniquely identifies the IoT
+                        System.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Asset">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="systemID" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>The ID of the IoT System this Asset belongs to.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" name="assetCategoryID" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>The ID of the Asset Category the Asset belongs
+                            to.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="assetVendorID" type="xs:string" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>References the Asset Vendor ID</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="description" minOccurs="0" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Textual description for the Asset.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="longDescription" type="xs:string" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Long textual description for the Asset.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" name="instalationDate" type="xs:dateTime">
+                    <xs:annotation>
+                        <xs:documentation>The date which the Asset was installed.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" name="inventoryDate " type="xs:dateTime">
+                    <xs:annotation>
+                        <xs:documentation>The last date the data/information of the Asset has been revisited.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" ref="dm:Location">
+                    <xs:annotation>
+                        <xs:documentation>Provides the Asset’s Physical or Virtual
+                            location</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Relantionships" maxOccurs="unbounded" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the relationship type and the Asset IDs this Asset is related with.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:ParameterValue">
+                                <xs:annotation>
+                                    <xs:documentation>Adittional parameters for this relantionship.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="AssetID" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Specifies Asset ID of the specified relantionship</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="RelantionshipType">
+                            <xs:annotation>
+                                <xs:documentation>Specifies the relationship type of the related Asset.</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:NMTOKEN">
+                                    <xs:enumeration value="isLocatedIn"/>
+                                    <xs:enumeration value="isConnectedTo"/>
+                                    <xs:enumeration value="isInstalledOn"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="AssetNature" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Specifies the nature of the Asset (Tangible or
+                            Intangible)</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:choice>
+                            <xs:element name="tangible" default="Physical" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>Specifies the nature of the Asset Tangible type (physical or syberphysical)</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:NMTOKEN">
+                                        <xs:enumeration value="Physical"/>
+                                        <xs:enumeration value="Cyberphysical"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="intangible" minOccurs="0" form="qualified"
+                                nillable="false"> </xs:element>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element maxOccurs="1" minOccurs="0" name="Patches">
+                    <xs:annotation>
+                        <xs:documentation>A list of patches applied to this asset.</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:list itemType="xs:string"/>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element minOccurs="0" name="businessValue" type="xs:int"/>
+                <xs:element name="KvAttribute" maxOccurs="unbounded" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Provide additional parameters for describing this Asset.
+                            Among the parameters the "ip_adress" and "port" number should be
+                            provided where applicable.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:ParameterValue"
+                            />
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>The name of the KvAttribute group these parameter Values belong to (i.e. network, general,...).</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="additionalInformation" type="xs:anyType" maxOccurs="unbounded"
+                    minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies an Asset as a UUID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>A human readable name which uniquely identifies the IoT
+                        Asset.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ParameterValue">
+        <xs:complexType>
+            <xs:all>
+                <xs:element type="xs:string" name="name"/>
+                <xs:element type="xs:anyType" name="value"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Parameter">
+        <xs:annotation>
+            <xs:documentation>Parameter Specification</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" type="xs:string" minOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Element describing the value of an
+                            attribute.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="1" name="type" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>A classification of data (i.e. short, int, float, boolean,
+                            ...)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="defaultValue" type="xs:anyType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>A predefined default value for an
+                            attribute.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Location">
+        <xs:annotation>
+            <xs:documentation>Indicating the location at which something took
+                place</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:choice>
+                <xs:element maxOccurs="1" minOccurs="0" name="geoLocation">
+                    <xs:annotation>
+                        <xs:documentation>Specifying a physical location (a pair of coordinates)
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="latitude" type="xs:string"/>
+                            <xs:element name="longitude" type="xs:string"/>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="virtualLocation" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Specifying a virtual location (it could be the ID of a
+                            resource or subsystem)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AdditionalInformation" type="xs:anyType">
+        <xs:annotation>
+            <xs:documentation>Optional auxiliary field that may contain any additional
+                information</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+</xs:schema>
