@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <!-- Author: Nikos Kefalakis (https://github.com/nkef) -->
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="eu:datacrop:global:dm"
