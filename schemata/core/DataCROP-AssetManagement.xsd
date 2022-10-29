@@ -227,7 +227,7 @@
                         <xs:choice>
                             <xs:element name="tangible" default="Physical" minOccurs="0">
                                 <xs:annotation>
-                                    <xs:documentation>Specifies the nature of the Asset Tangible type (physical or syberphysical)</xs:documentation>
+                                    <xs:documentation>Specifies the nature of the Asset Tangible type (physical or cyberphysical)</xs:documentation>
                                 </xs:annotation>
                                 <xs:simpleType>
                                     <xs:restriction base="xs:NMTOKEN">
@@ -243,7 +243,7 @@
                 </xs:element>
                 <xs:element maxOccurs="1" minOccurs="0" name="Patches">
                     <xs:annotation>
-                        <xs:documentation>A list of patches applied to this asset.</xs:documentation>
+                        <xs:documentation>A list of patches applied to this Asset.</xs:documentation>
                     </xs:annotation>
                     <xs:simpleType>
                         <xs:list itemType="xs:string"/>
