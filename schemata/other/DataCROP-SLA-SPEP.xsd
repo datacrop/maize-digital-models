@@ -114,14 +114,14 @@
                                 </xs:sequence>
                                 <xs:attribute name="serviceName" type="xs:string">
                                     <xs:annotation>
-                                        <xs:documentation>The name or ID of the SecureIoT component/service these metrics are collected from</xs:documentation>
+                                        <xs:documentation>The name or ID of the component/service these metrics are collected from</xs:documentation>
                                     </xs:annotation>
                                 </xs:attribute>
                             </xs:complexType>
                         </xs:element>
                         <xs:element minOccurs="0" name="ConfigurationParameters">
                             <xs:annotation>
-                                <xs:documentation>SLA component configuration parameters specification. Here we identify the required parameters for the SecureIoT SLA component runtime.</xs:documentation>
+                                <xs:documentation>SLA component configuration parameters specification. Here we identify the required parameters for the SLA component runtime.</xs:documentation>
                             </xs:annotation>
                             <xs:complexType>
                                 <xs:sequence>
@@ -195,7 +195,7 @@
                                 </xs:sequence>
                                 <xs:attribute name="serviceName" type="xs:string">
                                     <xs:annotation>
-                                        <xs:documentation>The name or ID of the SecureIoT component/service these metrics are collected from</xs:documentation>
+                                        <xs:documentation>The name or ID of the component/service these metrics are collected from</xs:documentation>
                                     </xs:annotation>
                                 </xs:attribute>
                             </xs:complexType>
@@ -288,7 +288,7 @@
                         </xs:element>
                         <xs:element minOccurs="0" name="serviceName" type="xs:string">
                             <xs:annotation>
-                                <xs:documentation>The name or ID of the SecureIoT component/service these metrics are collected from</xs:documentation>
+                                <xs:documentation>The name or ID of the component/service these metrics are collected from</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                         <xs:element minOccurs="0" name="timestamp" type="xs:dateTime">

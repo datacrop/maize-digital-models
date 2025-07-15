@@ -11,22 +11,7 @@
         </xs:annotation>
         <xs:sequence>
             <xs:element ref="dm:System" maxOccurs="unbounded" minOccurs="1"/>
-            <xs:element name="AssetCategory" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="id" type="xs:string" use="optional">
-                        <xs:annotation>
-                            <xs:documentation>Uniquely identifies an Asset Category as a
-                                UUID</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="name" type="xs:string" use="required">
-                        <xs:annotation>
-                            <xs:documentation>A human readable name which uniquely identifies the
-                                IoT Asset Category.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:complexType>
-            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:AssetCategory"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:Asset">
                 <xs:annotation>
                     <xs:documentation>A cyber, physical or cyber-physical element within an
@@ -34,74 +19,8 @@
                         operations</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="Monitoring">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="ProbeMapping">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="assetID" type="xs:string"/>
-                                    <xs:element name="ProbeIDs" maxOccurs="1" minOccurs="0">
-                                        <xs:annotation>
-                                            <xs:documentation>The ID of the Probe deployed to monitor this
-                            asset</xs:documentation>
-                                        </xs:annotation>
-                                        <xs:simpleType>
-                                            <xs:list itemType="xs:string"/>
-                                        </xs:simpleType>
-                                    </xs:element>
-                                </xs:sequence>
-                                <xs:attribute name="id" type="xs:string">
-                                    <xs:annotation>
-                                        <xs:documentation>Uniquely identifies a Probe mapping with an Asset as an UUID.</xs:documentation>
-                                    </xs:annotation>
-                                </xs:attribute>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="Vendors">
-                <xs:annotation>
-                    <xs:documentation>Specifies an Asset Vendor.</xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="1" name="Product">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element maxOccurs="unbounded" minOccurs="0" name="cpeID"
-                                        type="xs:string"/>
-                                </xs:sequence>
-                                <xs:attribute name="id" type="xs:string" use="optional">
-                                    <xs:annotation>
-                                        <xs:documentation>Uniquely identifies a Product as a
-                                            UUID</xs:documentation>
-                                    </xs:annotation>
-                                </xs:attribute>
-                                <xs:attribute name="name" type="xs:string" use="required">
-                                    <xs:annotation>
-                                        <xs:documentation>A human readable name which uniquely
-                                            identifies the Product.</xs:documentation>
-                                    </xs:annotation>
-                                </xs:attribute>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                    <xs:attribute name="id" type="xs:string" use="optional">
-                        <xs:annotation>
-                            <xs:documentation>Uniquely identifies a Vendor as a
-                                UUID</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="name" type="xs:string" use="required">
-                        <xs:annotation>
-                            <xs:documentation>A human readable name which uniquely identifies the
-                                Vendor.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:complexType>
-            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:Vendor"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="dm:AssetsConnectivity"/>
         </xs:sequence>
     </xs:group>
     <xs:element name="System">
@@ -284,6 +203,21 @@
             </xs:attribute>
         </xs:complexType>
     </xs:element>
+    <xs:element name="AssetCategory">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies an Asset Category as a UUID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>A human readable name which uniquely identifies the
+                                IoT Asset Category.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
     <xs:element name="ParameterValue">
         <xs:complexType>
             <xs:all>
@@ -353,5 +287,116 @@
             <xs:documentation>Optional auxiliary field that may contain any additional
                 information</xs:documentation>
         </xs:annotation>
+    </xs:element>
+    <xs:element name="Vendors">
+        <xs:annotation>
+            <xs:documentation>Specifies an Asset Vendor.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" name="Product">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="cpeID"
+                                type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>Uniquely identifies a Product as a
+                                            UUID</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="name" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>A human readable name which uniquely
+                                            identifies the Product.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Vendor as a
+                                UUID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>A human readable name which uniquely identifies the
+                                Vendor.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AssetsConnectivity">
+        <xs:annotation>
+            <xs:documentation>This entity hosts the Assets connectivity. This AssetConnectivity is created by one or more DigitalResources which are collecting data for the Asset through various integration technologies. e.g., the AssetConnectivity can be created by sensors deployed on a physical Asset for monitoring its status or charachteristics. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="DigitalResourceMapping" maxOccurs="unbounded" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="assetID" type="xs:string"/>
+                            <xs:element name="DigitalResourceIDs" maxOccurs="1" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation>The ID of the DigitalResource responsible for monitoring an asset.</xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:list itemType="xs:string"/>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Uniquely identifies the DigitalResource mapping with an Asset as an UUID.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Vendor">
+        <xs:annotation>
+            <xs:documentation>Specifies an Asset Vendor.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" name="Product">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="cpeID"
+                                type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:string" use="optional">
+                            <xs:annotation>
+                                <xs:documentation>Uniquely identifies a Product as a
+                                            UUID</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="name" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>A human readable name which uniquely
+                                            identifies the Product.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Uniquely identifies a Vendor as a
+                                UUID</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>A human readable name which uniquely identifies the
+                                Vendor.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
     </xs:element>
 </xs:schema>

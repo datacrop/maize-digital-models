@@ -266,6 +266,11 @@
                             Manifest</xs:documentation>
                     </xs:annotation>
                 </xs:element>
+                <xs:element name="assetID" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Points to the Asset this processor is deployed on.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
                 <xs:element name="DataInput">
                     <xs:annotation>
                         <xs:documentation>The list of Digital Resources the Processor is using as input.</xs:documentation>
@@ -291,7 +296,6 @@
                 <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:ParameterValue"/>
                 <xs:element name="additionalInformation" type="xs:anyType" maxOccurs="unbounded"
                     minOccurs="0"/>
-
             </xs:sequence>
             <xs:attribute name="id" type="xs:string" use="optional">
                 <xs:annotation>
@@ -366,10 +370,17 @@
                         <xs:documentation>Processor Owner</xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element minOccurs="1" maxOccurs="1" name="processorLocation" type="xs:string">
-                    <xs:annotation>
-                        <xs:documentation>The physical or relative location of the processor library or service instance.</xs:documentation>
-                    </xs:annotation>
+                <xs:element name="ProcessorLocation">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element minOccurs="1" maxOccurs="1" name="location" type="xs:string">
+                                <xs:annotation>
+                                    <xs:documentation>The physical or relative location of the processor library or service instance.</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="authenticationReferenceID" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
                 </xs:element>
                 <xs:element minOccurs="0" maxOccurs="1" ref="dm:Parameters"/>
                 <xs:element maxOccurs="unbounded" minOccurs="0" ref="dm:AdditionalInformation"/>
@@ -384,6 +395,24 @@
                     <xs:documentation>The processor name</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Authentication">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="description" type="xs:string"/>
+                <xs:element name="credentials">
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                            <xs:element minOccurs="1" name="username" type="xs:string" maxOccurs="1"/>
+                            <xs:element minOccurs="1" name="password" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" name="token" type="xs:string"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="name" type="xs:string"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="Parameters">
@@ -401,5 +430,23 @@
             <xs:documentation>Optional auxiliary field that may contain any additional
                 information</xs:documentation>
         </xs:annotation>
+    </xs:element>
+    <xs:element name="scheduling">
+        <xs:complexType>
+            <xs:all>
+                <xs:element form="qualified" minOccurs="0" name="startTime" type="xs:dateTime"/>
+                <xs:element maxOccurs="1" minOccurs="0" name="Periodicity" type="xs:int"/>
+                <xs:element minOccurs="0" name="stopTime" type="xs:dateTime"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="experimentControl">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" ref="dm:scheduling" maxOccurs="1"/>
+                <xs:element name="trigger" type="xs:anyURI" minOccurs="0"/>
+                <xs:element name="reportIfEmpty" type="xs:boolean" minOccurs="0" default="true"/>
+            </xs:sequence>
+        </xs:complexType>
     </xs:element>
 </xs:schema>
